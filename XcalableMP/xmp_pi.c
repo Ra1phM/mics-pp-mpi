@@ -2,6 +2,7 @@
 #include <stdlib.h> /* for exit */
 #include <stdarg.h> /* for va_{ list , args ... } */
 #include <unistd.h> /* for sleep */
+#include <time.h> /* for elapsed time */
 #include <math.h>
 
 int id = 0; // MPI id for the current process ( set global to be used in xprintf )
@@ -44,9 +45,7 @@ int main(int argc , char *argv []) {
   unsigned int n = 0;
   double elapsedTime = 0.0;
 
-  //MPI_Init(&argc,&argv);
-  //MPI_Comm_size(MPI_COMM_WORLD, &p);
-  //MPI_Comm_rank(MPI_COMM_WORLD, &id);
+  #pragma xmp nodes p(*)
 
   if ( id == 0) {
     xprintf ("Total Number of processes : %i\n", p);
@@ -55,26 +54,24 @@ int main(int argc , char *argv []) {
   }
 
   int i; 
-  double x, pi, pi_contribution = 0.0;
+  double x, pi = 0.0;
   
-  //MPI_Barrier(MPI_COMM_WORLD);
-  //elapsedTime = -MPI_Wtime();
+  clock_t t1 = clock();
   
   // send n to the other processes
-  //MPI_Bcast(&n, 1, MPI_UNSIGNED, 0, MPI_COMM_WORLD);
-  //#pragma xmp bcast var on node to node
+  #pragma xmp bcast (n)
   
   double a = 1.0 / ( 2.0 * (double)n );
   double sum = 0.0;
   for (i = id; i < n; i += p) {
     sum += f( i/(double)n ) + f( (i+1.0)/(double)n );
   }
-  pi_contribution = a * sum;
+  pi = a * sum;
   
-  //MPI_Reduce(&pi_contribution, &pi, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
-  //#pragma xmp reduction (var:op)
+  #pragma xmp reduction (+:pi)
   
-  //elapsedTime += MPI_Wtime();
+  clock_t t2 = clock();
+  elapsedTime = (double)(t2 - t1) / CLOCKS_PER_SEC;
 
   if ( id == 0) {
     print_result(p, elapsedTime, pi);
