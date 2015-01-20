@@ -77,6 +77,5 @@ int main(int argc , char *argv []) {
     print_result(p, elapsedTime, pi);
   }
 
-  //MPI_Finalize();
   return 0;
 }
