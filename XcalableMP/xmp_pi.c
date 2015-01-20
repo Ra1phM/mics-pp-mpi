@@ -62,6 +62,7 @@ int main(int argc , char *argv []) {
   
   // send n to the other processes
   //MPI_Bcast(&n, 1, MPI_UNSIGNED, 0, MPI_COMM_WORLD);
+  //#pragma xmp bcast var on node to node
   
   double a = 1.0 / ( 2.0 * (double)n );
   double sum = 0.0;
@@ -71,6 +72,7 @@ int main(int argc , char *argv []) {
   pi_contribution = a * sum;
   
   //MPI_Reduce(&pi_contribution, &pi, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+  //#pragma xmp reduction (var:op)
   
   //elapsedTime += MPI_Wtime();
 
