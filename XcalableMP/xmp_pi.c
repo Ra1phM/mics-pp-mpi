@@ -2,6 +2,7 @@
 #include <stdlib.h> /* for exit */
 #include <stdarg.h> /* for va_{ list , args ... } */
 #include <unistd.h> /* for sleep */
+#include <time.h> /* for elapsed time */
 #include <math.h>
 
 int id = 0; // MPI id for the current process ( set global to be used in xprintf )
@@ -27,40 +28,54 @@ void save_benchmark(int numprocs, double elapsedTime) {
   }
 }
 
-void xprintf (char *format, ...) {
-  va_list args ;
-  va_start (args , format);
-  printf ("[Node %i] ", my_id);
-  vprintf (format, args);
-  fflush (stdout);
-}
-
 double f(double x) {
   return 4.0 / ( 1.0 + (x * x) );
 }
 
-int main(int argc , char *argv []) {
-  int p; // number of processors
-  unsigned int n = 0;
-  double elapsed_time = 0.0;
-  
-  printf ("Input n = ");
-  scanf("%u", &n);
+void xprintf (char *format, ...) {
+  va_list args ;
+  va_start (args , format);
+  printf ("[Node %i] ", id);
+  vprintf (format, args);
+  fflush (stdout);
+}
 
+int main(int argc , char *argv []) {
+  int p; // MPI specifc : number of processors
+  unsigned int n = 0;
+  double elapsedTime = 0.0;
+
+  #pragma xmp nodes p(*)
+
+  if ( id == 0) {
+    xprintf ("Total Number of processes : %i\n", p);
+    xprintf ("Input n = ");
+    scanf("%u", &n);
+  }
+
+  int i; 
+  double x, pi = 0.0;
+  
   clock_t t1 = clock();
   
-  // Compute Pi
+  // send n to the other processes
+  #pragma xmp bcast (n)
+  
   double a = 1.0 / ( 2.0 * (double)n );
-  double sum, i = 0.0;
-  for(i = 0.0; i < n; i++) {
+  double sum = 0.0;
+  for (i = id; i < n; i += p) {
     sum += f( i/(double)n ) + f( (i+1.0)/(double)n );
   }
-  double pi = a * sum;
-
+  pi = a * sum;
+  
+  #pragma xmp reduction (+:pi)
+  
   clock_t t2 = clock();
   elapsedTime = (double)(t2 - t1) / CLOCKS_PER_SEC;
-  
-  print_result(p, elapsedTime, pi);
-  
+
+  if ( id == 0) {
+    print_result(p, elapsedTime, pi);
+  }
+
   return 0;
 }
