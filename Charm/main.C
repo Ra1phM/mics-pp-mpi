@@ -81,9 +81,10 @@ void Main::done() {
   // Increment the doneCount. If all of the Hello chare
   // objects have indicated that they are done, then exit.
   // Otherwise, continue waiting for the Hello chare objects.
-  doneCount++;
-  if (doneCount >= numElements)
-    CkExit();
+  //doneCount++;
+  //if (doneCount >= numElements)
+  
+  CkExit();
 }
 
 #include "main.def.h"
