@@ -10,7 +10,7 @@ int id = 0; // MPI id for the current process ( set global to be used in xprintf
 
 #define PI_REF 3.141592653589793238462643383279 // 30 digits
 
-#define AUTOMATE_RUN 0
+#define AUTOMATE_RUN 1
 
 #define N_REF 10000000
 
