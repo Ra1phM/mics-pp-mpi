@@ -14,7 +14,7 @@ int id = 0; // MPI id for the current process ( set global to be used in xprintf
 
 #define N_REF 10000000
 
-void print_result(int numprocs, double elapsedTime, double pi) {
+void print_result(double elapsedTime, double pi) {
   printf("Elapsed time:          %2f s\n", elapsedTime );
   printf("Result Pi:             %.30f\n", pi);
   printf("Error Approximation:   %.30f\n", fabs(pi - PI_REF));
@@ -74,7 +74,8 @@ int main(int argc , char *argv []) {
   elapsedTime = (double)(t2 - t1) / CLOCKS_PER_SEC;
 
   if ( id == 0) {
-    print_result(p, elapsedTime, pi);
+    print_result(elapsedTime, pi);
+    save_benchmark(xmp_all_num_nodes(), elapsedTime, pi);
   }
 
   return 0;
