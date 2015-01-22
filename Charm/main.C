@@ -18,35 +18,6 @@
 
 #define N_REF 1000000000
 
-// Entry point of Charm++ application
-Main::Main(CkArgMsg* msg) {
-
-  id = CkMyRank();
-  p = CkNumPes();
-
-  // Display some info about this execution
-  // for the user.
-  CkPrintf("Running \"Hello World\" with %d elements "
-           "using %d processors.\n",
-           numElements, CkNumPes());
-
-  // Set the mainProxy readonly to point to a
-  // proxy for the Main chare object (this
-  // chare object).
-  mainProxy = thisProxy;
-
-  // Create the array of Hello chare objects.
-  CProxy_Hello helloArray = CProxy_Hello::ckNew(numElements);
-
-  // Invoke the "sayHi()" entry method on all of the
-  // elements in the helloArray array of chare objects.
-  helloArray.sayHi(-1);
-}
-
-// Constructor needed for chare object migration (ignore for now)
-// NOTE: This constructor does not need to appear in the ".ci" file
-Main::Main(CkMigrateMessage* msg) { }
-
 void print_result(double elapsedTime, double pi) {
   printf("Elapsed time:          %2f s\n", elapsedTime );
   printf("Result Pi:             %.30f\n", pi);
@@ -75,6 +46,35 @@ void xprintf (char *format, ...) {
 double f(double x) {
   return 4.0 / ( 1.0 + (x * x) );
 }
+
+// Entry point of Charm++ application
+Main::Main(CkArgMsg* msg) {
+
+  id = CkMyRank();
+  p = CkNumPes();
+
+  // Display some info about this execution
+  // for the user.
+  CkPrintf("Running \"Hello World\" with %d elements "
+           "using %d processors.\n",
+           numElements, CkNumPes());
+
+  // Set the mainProxy readonly to point to a
+  // proxy for the Main chare object (this
+  // chare object).
+  mainProxy = thisProxy;
+
+  // Create the array of Hello chare objects.
+  CProxy_Hello helloArray = CProxy_Hello::ckNew(numElements);
+
+  // Invoke the "sayHi()" entry method on all of the
+  // elements in the helloArray array of chare objects.
+  helloArray.sayHi(-1);
+}
+
+// Constructor needed for chare object migration (ignore for now)
+// NOTE: This constructor does not need to appear in the ".ci" file
+Main::Main(CkMigrateMessage* msg) { }
 
 // When called, the "done()" entry method will increment the doneCount.
 // Once all of the Hello chare objects have indiciated that they have
