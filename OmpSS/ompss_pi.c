@@ -5,13 +5,13 @@
 #include <time.h> /* for elapsed time */
 #include <math.h>
 
-int id = 0; // MPI id for the current process ( set global to be used in xprintf )
+int id = 0;
 
 #define PI_REF 3.141592653589793238462643383279 // 30 digits
 
 #define AUTOMATE_RUN 1
 
-#define N_REF 10000000
+#define N_REF 1000000000
 
 void print_result(double elapsedTime, double pi) {
   printf("Elapsed time:          %2f s\n", elapsedTime );

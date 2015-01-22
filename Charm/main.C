@@ -2,6 +2,7 @@
 #include <stdlib.h> /* for exit */
 #include <stdarg.h> /* for va_{ list , args ... } */
 #include <unistd.h> /* for sleep */
+#include <time.h> /* for elapsed time */
 #include <math.h>
 
 #include "main.decl.h"
@@ -15,12 +16,13 @@
 
 #define AUTOMATE_RUN 1
 
-#define N_REF 10000000
+#define N_REF 1000000000
 
 // Entry point of Charm++ application
 Main::Main(CkArgMsg* msg) {
 
   id = CkMyRank();
+  p = CkNumPes();
 
   // Display some info about this execution
   // for the user.

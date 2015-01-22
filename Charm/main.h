@@ -5,6 +5,7 @@ class Main : public CBase_Main {
 
  private:
   int id;
+  int p;
 
  public:
   /// Constructors ///

@@ -11,7 +11,7 @@ int id = 0;
 
 #define AUTOMATE_RUN 1
 
-#define N_REF 10000000
+#define N_REF 1000000000
 
 void print_result(double elapsedTime, double pi) {
   printf("Elapsed time:          %2f s\n", elapsedTime );
