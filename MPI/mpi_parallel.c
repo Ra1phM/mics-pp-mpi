@@ -5,7 +5,7 @@
 #include <math.h>
 #include <mpi.h>
 
-int id = 0; // MPI id for the current process ( set global to be used in xprintf )
+int id = 0;
 
 #define PI_REF 3.141592653589793238462643383279 // 30 digits
 
