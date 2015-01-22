@@ -43,7 +43,7 @@ double f(double x) {
 }
 
 int main(int argc , char *argv []) {
-  int p; // MPI specifc : number of processors
+  int p; // number of processors
   double elapsedTime = 0.0;
 
   MPI_Init(&argc,&argv);
@@ -55,9 +55,6 @@ int main(int argc , char *argv []) {
   
   MPI_Barrier(MPI_COMM_WORLD);
   elapsedTime = -MPI_Wtime();
-  
-  // send n to the other processes
-  //MPI_Bcast(&n, 1, MPI_UNSIGNED, 0, MPI_COMM_WORLD);
   
   double a = 1.0 / ( 2.0 * (double)N_REF );
   double sum = 0.0;

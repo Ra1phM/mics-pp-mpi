@@ -44,38 +44,33 @@ void xprintf (char *format, ...) {
 }
 
 int main(int argc , char *argv []) {
-  int p; // MPI specifc : number of processors
+  int p; // number of processors
   double elapsedTime = 0.0;
 
   #pragma xmp nodes p(*)
 
   id = xmp_node_num();
+  p = xmp_all_num_nodes();
 
   int i; 
   double x, pi = 0.0;
   
   clock_t t1 = clock();
   
-  // send n to the other processes
-  //#pragma xmp bcast (n)
-  
   double a = 1.0 / ( 2.0 * (double)N_REF );
   double sum = 0.0;
   #pragma xmp loop on t(i) on reduction(+:sum)
-  //for (i = id; i < N_REF; i += p) {
   for (i = 0; i < N_REF; i++) {
     sum += f( i/(double)N_REF ) + f( (i+1.0)/(double)N_REF );
   }
   pi = a * sum;
   
-  //#pragma xmp reduction (+:pi)
-  
   clock_t t2 = clock();
   elapsedTime = (double)(t2 - t1) / CLOCKS_PER_SEC;
 
-  if ( id == 0) {
+  if ( id == 0 ) {
     print_result(elapsedTime, pi);
-    save_benchmark(xmp_all_num_nodes(), elapsedTime, pi);
+    save_benchmark(p, elapsedTime, pi);
   }
 
   return 0;
