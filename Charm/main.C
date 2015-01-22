@@ -1,3 +1,9 @@
+#include <stdio.h> /* for printf */
+#include <stdlib.h> /* for exit */
+#include <stdarg.h> /* for va_{ list , args ... } */
+#include <unistd.h> /* for sleep */
+#include <math.h>
+
 #include "main.decl.h"
 
 #include "main.h"
