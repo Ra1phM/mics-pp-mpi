@@ -73,7 +73,7 @@ int main(int argc , char *argv []) {
   clock_t t2 = clock();
   elapsedTime = (double)(t2 - t1) / CLOCKS_PER_SEC;
 
-  if ( id == 0) {
+  if ( id == 0 ) {
     print_result(elapsedTime, pi);
     save_benchmark(xmp_all_num_nodes(), elapsedTime, pi);
   }
