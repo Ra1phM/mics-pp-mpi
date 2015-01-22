@@ -18,13 +18,13 @@
 
 #define N_REF 1000000000
 
-void print_result(double elapsedTime, double pi) {
+void Main::print_result(double elapsedTime, double pi) {
   printf("Elapsed time:          %2f s\n", elapsedTime );
   printf("Result Pi:             %.30f\n", pi);
   printf("Error Approximation:   %.30f\n", fabs(pi - PI_REF));
 }
 
-void save_benchmark(int numprocs, double elapsedTime) {
+void Main::save_benchmark(int numprocs, double elapsedTime) {
   if (AUTOMATE_RUN) {
     printf("\n");
     printf("Auto-Save:\n");
@@ -35,7 +35,7 @@ void save_benchmark(int numprocs, double elapsedTime) {
   }
 }
 
-void xprintf (char *format, ...) {
+void Main::xprintf (char *format, ...) {
   va_list args ;
   va_start (args , format);
   printf ("[Node %i] ", id);
@@ -43,7 +43,7 @@ void xprintf (char *format, ...) {
   fflush (stdout);
 }
 
-double f(double x) {
+double Main::f(double x) {
   return 4.0 / ( 1.0 + (x * x) );
 }
 
