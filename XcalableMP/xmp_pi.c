@@ -11,6 +11,8 @@ int id = 0; // MPI id for the current process ( set global to be used in xprintf
 
 #define AUTOMATE_RUN 0
 
+#define N_REF 10000000
+
 void print_result(int numprocs, double elapsedTime, double pi) {
   printf("Elapsed time:          %2f s\n", elapsedTime );
   printf("Result Pi:             %.30f\n", pi);
@@ -42,16 +44,9 @@ void xprintf (char *format, ...) {
 
 int main(int argc , char *argv []) {
   int p; // MPI specifc : number of processors
-  unsigned int n = 0;
   double elapsedTime = 0.0;
 
   #pragma xmp nodes p(*)
-
-  if ( id == 0) {
-    xprintf ("Total Number of processes : %i\n", p);
-    xprintf ("Input n = ");
-    scanf("%u", &n);
-  }
 
   int i; 
   double x, pi = 0.0;
@@ -63,8 +58,8 @@ int main(int argc , char *argv []) {
   
   double a = 1.0 / ( 2.0 * (double)n );
   double sum = 0.0;
-  for (i = id; i < n; i += p) {
-    sum += f( i/(double)n ) + f( (i+1.0)/(double)n );
+  for (i = id; i < N_REF; i += p) {
+    sum += f( i/(double)N_REF ) + f( (i+1.0)/(double)N_REF );
   }
   pi = a * sum;
   
