@@ -70,7 +70,7 @@ int main(int argc , char *argv []) {
 
   if ( id == 0 ) {
     print_result(elapsedTime, pi);
-    save_benchmark(p, elapsedTime, pi);
+    save_benchmark(p, elapsedTime);
   }
 
   return 0;
