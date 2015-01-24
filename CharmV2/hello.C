@@ -35,6 +35,8 @@ public:
 
     arr[0].SayHi(17);*/
 
+    mainProxy = thisProxy;
+
     double elapsedTime = 0.0;
 
     int id = CkMyRank();
@@ -63,6 +65,8 @@ public:
     if ( id == 0 ) {
       print_result(elapsedTime, pi);
       save_benchmark(p, elapsedTime);
+
+      mainProxy.done();
     }
   };
 
