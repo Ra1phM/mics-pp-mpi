@@ -37,8 +37,8 @@ public:
 
     double elapsedTime = 0.0;
 
-    id = CkMyRank();
-    p = CkNumPes();
+    int id = CkMyRank();
+    int p = CkNumPes();
 
     int i; 
     double x, pi, pi_contribution = 0.0;
