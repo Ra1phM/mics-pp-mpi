@@ -44,13 +44,13 @@ void xprintf (char *format, ...) {
 }
 
 int main(int argc , char *argv []) {
-  int p; // number of processors
+  int np; // number of processors
   double elapsedTime = 0.0;
 
   #pragma xmp nodes p(*)
 
   id = xmp_node_num();
-  p = xmp_all_num_nodes();
+  np = xmp_all_num_nodes();
 
   int i; 
   double x, pi = 0.0;
@@ -70,7 +70,7 @@ int main(int argc , char *argv []) {
 
   if ( id == 0 ) {
     print_result(elapsedTime, pi);
-    save_benchmark(p, elapsedTime);
+    save_benchmark(np, elapsedTime);
   }
 
   return 0;
