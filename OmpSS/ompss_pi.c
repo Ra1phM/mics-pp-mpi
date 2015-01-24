@@ -4,6 +4,7 @@
 #include <unistd.h> /* for sleep */
 #include <time.h> /* for elapsed time */
 #include <math.h>
+#include <omp.h>
 
 int id = 0;
 
@@ -57,8 +58,9 @@ int main(int argc , char *argv []) {
   double a = 1.0 / ( 2.0 * (double)N_REF );
   double sum = 0.0;
 
-  #pragma omp parallel for reduction(+:sum)
-  for (i = 0; i < N_REF; i++) {
+  #pragma omp for reduction(+:sum)
+  //for (i = 0; i < N_REF; i++) {
+  for (i = id; i < N_REF; i += p) {
     sum += f( i/(double)N_REF ) + f( (i+1.0)/(double)N_REF );
   }
   pi = a * sum;
