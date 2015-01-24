@@ -58,9 +58,6 @@ Main::Main(CkArgMsg* msg) {
 
   clock_t t1 = clock();
 
-  double a = 1.0 / ( 2.0 * (double)N_REF );
-  double sum = 0.0;
-
   // Display some info about this execution
   // for the user.
   //CkPrintf("Running \"Hello World\" with %d elements using %d processors.\n",numElements, CkNumPes());
