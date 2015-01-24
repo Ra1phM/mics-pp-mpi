@@ -49,6 +49,7 @@ int main(int argc , char *argv []) {
 
   #pragma xmp nodes p(*)
   #pragma xmp template t(0:N_REF-1)
+  #pragma xmp distribute t(block) onto p
 
   id = xmp_node_num();
   np = xmp_all_num_nodes();
