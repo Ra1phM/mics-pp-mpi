@@ -35,12 +35,13 @@ public:
 
     arr[0].SayHi(17);*/
 
-    mainProxy = thisProxy;
-
     double elapsedTime = 0.0;
 
     int id = CkMyRank();
     int p = CkNumPes();
+
+    CkPrintf("Running with %d processors. (MyID = %d)\n", p, id);
+    mainProxy = thisProxy;
 
     int i; 
     double x, pi, pi_contribution = 0.0;
