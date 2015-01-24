@@ -61,11 +61,15 @@ int main(int argc , char *argv []) {
   
   double a = 1.0 / ( 2.0 * (double)N_REF );
   double sum = 0.0;
-  #pragma xmp loop on t(i) on reduction(+:sum)
+  #pragma xmp loop on t(i)
   for (i = 0; i < N_REF; i++) {
     sum += f( i/(double)N_REF ) + f( (i+1.0)/(double)N_REF );
   }
+  #pragma xmp reduction(+:sum)
+
   pi = a * sum;
+
+
   
   clock_t t2 = clock();
   elapsedTime = (double)(t2 - t1) / CLOCKS_PER_SEC;
