@@ -47,7 +47,7 @@ int main(int argc , char *argv []) {
   int p; // number of processors
   double elapsedTime = 0.0;
 
-  //#pragma xmp nodes p(*)
+  #pragma xmp nodes p(*)
 
   id = xmp_node_num();
   p = xmp_all_num_nodes();
@@ -59,7 +59,7 @@ int main(int argc , char *argv []) {
   
   double a = 1.0 / ( 2.0 * (double)N_REF );
   double sum = 0.0;
-  #pragma xmp loop on t(i) on reduction(+:sum)
+  #pragma xmp loop on t(i)// on reduction(+:sum)
   for (i = 0; i < N_REF; i++) {
     sum += f( i/(double)N_REF ) + f( (i+1.0)/(double)N_REF );
   }
