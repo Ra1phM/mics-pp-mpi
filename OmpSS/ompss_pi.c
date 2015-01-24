@@ -68,7 +68,7 @@ int main(int argc , char *argv []) {
 
   if ( id == 0 ) {
     print_result(elapsedTime, pi);
-    save_benchmark(xmp_all_num_nodes(), elapsedTime);
+    save_benchmark(p, elapsedTime);
   }
 
   return 0;
