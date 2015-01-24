@@ -2,6 +2,8 @@
 #CHARMC = $(CHARMDIR)/bin/charmc $(OPTS)
 CHARMC=/home/users/imuller/charm/bin/charmc $(OPTS)
 
+OBJS = hello.o
+
 default: all
 all: hello
 
