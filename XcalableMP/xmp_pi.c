@@ -54,6 +54,8 @@ int main(int argc , char *argv []) {
   id = xmp_node_num();
   np = xmp_all_num_nodes();
 
+  printf("id, np: %d, %d\n", id, np);
+
   int i; 
   double x, pi = 0.0;
   
