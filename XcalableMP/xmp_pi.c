@@ -48,6 +48,7 @@ int main(int argc , char *argv []) {
   double elapsedTime = 0.0;
 
   #pragma xmp nodes p(*)
+  #pragma xmp template t(0:N_REF-1)
 
   id = xmp_node_num();
   np = xmp_all_num_nodes();
@@ -59,7 +60,7 @@ int main(int argc , char *argv []) {
   
   double a = 1.0 / ( 2.0 * (double)N_REF );
   double sum = 0.0;
-  #pragma xmp loop on p(i)// on reduction(+:sum)
+  #pragma xmp loop on t(i)// on reduction(+:sum)
   for (i = 0; i < N_REF; i++) {
     sum += f( i/(double)N_REF ) + f( (i+1.0)/(double)N_REF );
   }
