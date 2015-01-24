@@ -4,9 +4,7 @@
 #include <unistd.h> /* for sleep */
 #include <time.h> /* for elapsed time */
 #include <math.h>
-
 #include "main.decl.h"
-
 #include "main.h"
 #include "hello.decl.h"
 
