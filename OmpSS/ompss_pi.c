@@ -4,6 +4,7 @@
 #include <unistd.h> /* for sleep */
 #include <time.h> /* for elapsed time */
 #include <math.h>
+#include <omp.h>
 
 int id = 0;
 
