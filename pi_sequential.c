@@ -3,7 +3,6 @@
 #include <stdarg.h> /* for va_{ list , args ... } */
 #include <unistd.h> /* for sleep */
 #include <math.h>
-#include <mpi.h>
 
 int id = 0; // MPI id for the current process ( set global to be used in xprintf )
 
@@ -45,15 +44,10 @@ int main(int argc , char *argv []) {
   unsigned int n = 0;
   double elapsed_time = 0.0;
   
-  MPI_Init(&argc,&argv);
-  MPI_Comm_size(MPI_COMM_WORLD,&p);
-  MPI_Comm_rank(MPI_COMM_WORLD,&id);
-
   printf ("Input n = ");
   scanf("%u", &n);
-  
-  MPI_Barrier(MPI_COMM_WORLD);
-  elapsed_time = -MPI_Wtime();
+
+  clock_t t1 = clock();
   
   // Compute Pi
   double a = 1.0 / ( 2.0 * (double)n );
@@ -63,10 +57,10 @@ int main(int argc , char *argv []) {
   }
   double pi = a * sum;
 
-  elapsedTime += MPI_Wtime();
+  clock_t t2 = clock();
+  elapsedTime = (double)(t2 - t1) / CLOCKS_PER_SEC;
   
   print_result(p, elapsedTime, pi);
   
-  MPI_Finalize();
   return 0;
 }

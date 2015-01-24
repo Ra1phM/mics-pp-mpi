@@ -2,8 +2,9 @@
 #include <stdlib.h> /* for exit */
 #include <stdarg.h> /* for va_{ list , args ... } */
 #include <unistd.h> /* for sleep */
+#include <time.h> /* for elapsed time */
 #include <math.h>
-#include <mpi.h>
+#include <xmp.h>
 
 int id = 0;
 
@@ -30,6 +31,10 @@ void save_benchmark(int numprocs, double elapsedTime) {
   }
 }
 
+double f(double x) {
+  return 4.0 / ( 1.0 + (x * x) );
+}
+
 void xprintf (char *format, ...) {
   va_list args ;
   va_start (args , format);
@@ -38,40 +43,35 @@ void xprintf (char *format, ...) {
   fflush (stdout);
 }
 
-double f(double x) {
-  return 4.0 / ( 1.0 + (x * x) );
-}
-
 int main(int argc , char *argv []) {
   int p; // number of processors
   double elapsedTime = 0.0;
 
-  MPI_Init(&argc,&argv);
-  MPI_Comm_size(MPI_COMM_WORLD, &p);
-  MPI_Comm_rank(MPI_COMM_WORLD, &id);
+  #pragma xmp nodes p(*)
+
+  id = xmp_node_num();
+  p = xmp_all_num_nodes();
 
   int i; 
-  double x, pi, pi_contribution = 0.0;
+  double x, pi = 0.0;
   
-  MPI_Barrier(MPI_COMM_WORLD);
-  elapsedTime = -MPI_Wtime();
+  clock_t t1 = clock();
   
   double a = 1.0 / ( 2.0 * (double)N_REF );
   double sum = 0.0;
-  for (i = id; i < N_REF; i += p) {
+  #pragma xmp loop on t(i) on reduction(+:sum)
+  for (i = 0; i < N_REF; i++) {
     sum += f( i/(double)N_REF ) + f( (i+1.0)/(double)N_REF );
   }
-  pi_contribution = a * sum;
+  pi = a * sum;
   
-  MPI_Reduce(&pi_contribution, &pi, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
-  
-  elapsedTime += MPI_Wtime();
+  clock_t t2 = clock();
+  elapsedTime = (double)(t2 - t1) / CLOCKS_PER_SEC;
 
   if ( id == 0 ) {
     print_result(elapsedTime, pi);
     save_benchmark(p, elapsedTime);
   }
 
-  MPI_Finalize();
   return 0;
 }
