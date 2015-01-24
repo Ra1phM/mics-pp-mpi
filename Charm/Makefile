@@ -1,5 +1,6 @@
-CHARMDIR = [put Charm++ install directory here]
-CHARMC = $(CHARMDIR)/bin/charmc $(OPTS)
+#CHARMDIR = [put Charm++ install directory here]
+#CHARMC = $(CHARMDIR)/bin/charmc $(OPTS)
+CHARMC=/home/users/imuller/charm/bin/charmc $(OPTS)
 
 default: all
 all: hello
