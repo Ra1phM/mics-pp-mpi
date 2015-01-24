@@ -59,7 +59,8 @@ int main(int argc , char *argv []) {
   double sum = 0.0;
 
   #pragma omp for reduction(+:sum)
-  for (i = 0; i < N_REF; i++) {
+  //for (i = 0; i < N_REF; i++) {
+  for (i = id; i < N_REF; i += p) {
     sum += f( i/(double)N_REF ) + f( (i+1.0)/(double)N_REF );
   }
   pi = a * sum;
