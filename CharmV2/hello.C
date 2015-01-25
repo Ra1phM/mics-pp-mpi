@@ -66,7 +66,7 @@ public:
     CkPrintf("Checkpoint 2\n");*/
 
     for (i = 0; i < p; i++) {
-      CProxy_Hello::ckNew(p);
+      CProxy_Hello::ckNew(i, p);
       //arr[i].ckSetReductionClient(cb);
       //arr[i].SayHi(p);
     }
