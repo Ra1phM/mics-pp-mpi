@@ -1,6 +1,5 @@
 mainmodule hello {
   readonly CProxy_Main mainProxy;
-  readonly int nElements;
 
   mainchare Main {
     entry Main(CkArgMsg *m);
@@ -8,7 +7,7 @@ mainmodule hello {
   };
 
   chare Hello {
-    entry Hello(int p);
+    entry Hello(int id, int p);
     entry void SayHi(int hiNo);
   };        	
 };

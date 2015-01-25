@@ -13,7 +13,6 @@
 #define N_REF 1000000000
 
 CProxy_Main mainProxy;
-int nElements;
 
 int count;
 double pi_final;
@@ -132,28 +131,28 @@ public:
 class Hello : public CBase_Hello
 {
 public:
-  Hello(int p)
+  Hello(int id, int p)
   {
-    CkPrintf("Hello %d created\n",thisIndex);
+    CkPrintf("Hello %d created\n",id);
 
-    CkPrintf("[%d] ThisIndex %d\n",thisIndex, thisIndex);
-    double pi = computeMyPi(thisIndex, p);
-    CkPrintf("[%d] computed pi %.20f\n",thisIndex, pi);
+    CkPrintf("[%d] ThisIndex %d\n",id, id);
+    double pi = computeMyPi(id, p);
+    CkPrintf("[%d] computed pi %.20f\n",id, pi);
     //contribute(sizeof(double),&pi,CkReduction::sum_double);
     mainProxy.done(pi);
-    CkPrintf("[%d] After Contribute.\n",thisIndex);
+    CkPrintf("[%d] After Contribute.\n",id);
   }
 
   Hello(CkMigrateMessage *m) {}
   
   void SayHi(int p)
   {
-    CkPrintf("[%d] ThisIndex %d\n",thisIndex, thisIndex);
+    /*CkPrintf("[%d] ThisIndex %d\n",thisIndex, thisIndex);
     double pi = computeMyPi(thisIndex, p);
     CkPrintf("[%d] computed pi %.20f\n",thisIndex, pi);
     //contribute(sizeof(double),&pi,CkReduction::sum_double);
     mainProxy.done(pi);
-    CkPrintf("[%d] After Contribute.\n",thisIndex);
+    CkPrintf("[%d] After Contribute.\n",thisIndex);*/
   }
 
   double f(double x) {
