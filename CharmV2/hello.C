@@ -55,9 +55,9 @@ public:
     CkCallback *cb = new CkCallback(CkIndex_Hello::SayHi(p), mainProxy);
     CkPrintf("After Callback");
 
-    arr.ckSetReductionClient(cb);
+    //arr.ckSetReductionClient(cb);
     CkPrintf("Checkpoint 1");
-    arr.SayHi(p);
+    //arr.SayHi(p);
     CkPrintf("Checkpoint 2");
 
     /*for (i = 0; i < p; i++) {
