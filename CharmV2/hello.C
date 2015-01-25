@@ -143,6 +143,7 @@ public:
   
   void SayHi(int p)
   {
+    CkPrintf("[%d] ThisIndex %d\n",thisIndex, thisIndex);
     double pi = computeMyPi(thisIndex, p);
     CkPrintf("[%d] computed pi %.20f\n",thisIndex, pi);
     contribute(sizeof(double),&pi,CkReduction::sum_double);
