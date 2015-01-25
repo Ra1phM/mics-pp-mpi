@@ -7,8 +7,8 @@ mainmodule hello {
     entry void done(double result);
   };
 
-  array [1D] Hello {
-    entry Hello(void);
+  chare Hello {
+    entry Hello(int p);
     entry void SayHi(int hiNo);
   };        	
 };

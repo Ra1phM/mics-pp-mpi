@@ -52,7 +52,7 @@ public:
     double x, pi, pi_contribution = 0.0;
 
     mainProxy = thisProxy;
-    CProxy_Hello arr = CProxy_Hello::ckNew(p);
+    //CProxy_Hello arr = CProxy_Hello::ckNew(p);
 
     //CkPrintf("Running with %d processors. (MyID = %d)\n", p, id);
 
@@ -67,8 +67,9 @@ public:
     CkPrintf("Checkpoint 2\n");*/
 
     for (i = 0; i < p; i++) {
+      CProxy_Hello::ckNew(p);
       //arr[i].ckSetReductionClient(cb);
-      arr[i].SayHi(p);
+      //arr[i].SayHi(p);
     }
     
     /*double a = 1.0 / ( 2.0 * (double)N_REF );
@@ -131,9 +132,16 @@ public:
 class Hello : public CBase_Hello
 {
 public:
-  Hello()
+  Hello(int p)
   {
     CkPrintf("Hello %d created\n",thisIndex);
+
+    CkPrintf("[%d] ThisIndex %d\n",thisIndex, thisIndex);
+    double pi = computeMyPi(thisIndex, p);
+    CkPrintf("[%d] computed pi %.20f\n",thisIndex, pi);
+    //contribute(sizeof(double),&pi,CkReduction::sum_double);
+    mainProxy.done(pi);
+    CkPrintf("[%d] After Contribute.\n",thisIndex);
   }
 
   Hello(CkMigrateMessage *m) {}
