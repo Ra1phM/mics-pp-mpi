@@ -15,6 +15,9 @@
 CProxy_Main mainProxy;
 int nElements;
 
+int count;
+double pi_final;
+
 clock_t t1, t2;
 
 /*mainchare*/
@@ -42,6 +45,9 @@ public:
     int id = CkMyRank();
     int p = CkNumPes();
 
+    count = p;
+    pi_final = 0.0;
+
     int i; 
     double x, pi, pi_contribution = 0.0;
 
@@ -51,19 +57,19 @@ public:
     //CkPrintf("Running with %d processors. (MyID = %d)\n", p, id);
 
     t1 = clock();
-    CkPrintf("Before Callback\n");
-    //CkCallback *cb = new CkCallback(CkIndex_Main::done(NULL), mainProxy);
+    /*CkPrintf("Before Callback\n");
+    CkCallback *cb = new CkCallback(CkIndex_Main::done(NULL), mainProxy);
     CkPrintf("After Callback\n");
 
-    //arr.ckSetReductionClient(cb);
+    arr.ckSetReductionClient(cb);
     CkPrintf("Checkpoint 1\n");
     arr.SayHi(p);
-    CkPrintf("Checkpoint 2\n");
+    CkPrintf("Checkpoint 2\n");*/
 
-    /*for (i = 0; i < p; i++) {
-      arr[i].ckSetReductionClient(cb);
+    for (i = 0; i < p; i++) {
+      //arr[i].ckSetReductionClient(cb);
       arr[i].SayHi(p);
-    }*/
+    }
     
     /*double a = 1.0 / ( 2.0 * (double)N_REF );
     double sum = 0.0;
@@ -103,30 +109,21 @@ public:
     }
   };
 
-/*  double f(double x) {
-    return 4.0 / ( 1.0 + (x * x) );
-  };
-
-  double computeMyPi(int id, int p) {
-    double a = 1.0 / ( 2.0 * (double)N_REF );
-    double sum = 0.0;
-    for (i = id; i < N_REF; i += p) {
-      sum += f( i/(double)N_REF ) + f( (i+1.0)/(double)N_REF );
-    }
-
-    return a * sum;
-  }*/
-
   void done(double result)
   {
-    t2 = clock();
-    double elapsedTime = (double)(t2 - t1) / CLOCKS_PER_SEC;
+    count--;
+    pi_final += result;
 
-    print_result(elapsedTime, result);
-    save_benchmark(CkNumPes(), elapsedTime);
+    if (count == 0) {
+      t2 = clock();
+      double elapsedTime = (double)(t2 - t1) / CLOCKS_PER_SEC;
 
-    CkPrintf("All done\n");
-    CkExit();
+      print_result(elapsedTime, pi_final);
+      save_benchmark(CkNumPes(), elapsedTime);
+
+      CkPrintf("All done\n");
+      CkExit();
+    }
   };
 };
 
@@ -146,8 +143,8 @@ public:
     CkPrintf("[%d] ThisIndex %d\n",thisIndex, thisIndex);
     double pi = computeMyPi(thisIndex, p);
     CkPrintf("[%d] computed pi %.20f\n",thisIndex, pi);
-    contribute(sizeof(double),&pi,CkReduction::sum_double, new CkCallback(CkIndex_Main::done(pi), mainProxy));
-    //mainProxy.done();
+    //contribute(sizeof(double),&pi,CkReduction::sum_double);
+    mainProxy.done(pi);
     CkPrintf("[%d] After Contribute.\n",thisIndex);
   }
 
