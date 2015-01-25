@@ -4,7 +4,7 @@ mainmodule hello {
 
   mainchare Main {
     entry Main(CkArgMsg *m);
-    entry void done(void);
+    entry [reductiontarget] void done(double result);
   };
 
   array [1D] Hello {

@@ -15,6 +15,8 @@
 CProxy_Main mainProxy;
 int nElements;
 
+clock_t t1, t2;
+
 /*mainchare*/
 class Main : public CBase_Main
 {
@@ -40,35 +42,45 @@ public:
     int id = CkMyRank();
     int p = CkNumPes();
 
-    CkPrintf("Running with %d processors. (MyID = %d)\n", p, id);
-    mainProxy = thisProxy;
-
     int i; 
     double x, pi, pi_contribution = 0.0;
 
-    clock_t t1 = clock();
+    mainProxy = thisProxy;
+    CProxy_Hello arr = CProxy_Hello::ckNew(p);
 
+    //CkPrintf("Running with %d processors. (MyID = %d)\n", p, id);
+
+    t1 = clock();
+
+    CkCallback cb = new CkCallback(CkReduction(Main, done), mainProxy);
+
+    arr.ckSetReductionClient(cb);
+    arr.SayHi(p);
+
+    /*for (i = 0; i < p; i++) {
+      arr[i].ckSetReductionClient(cb);
+      arr[i].SayHi(p);
+    }*/
     
-    double a = 1.0 / ( 2.0 * (double)N_REF );
+    /*double a = 1.0 / ( 2.0 * (double)N_REF );
     double sum = 0.0;
     for (i = id; i < N_REF; i += p) {
-    //for (i = 0; i < N_REF; i += 1) {
       sum += f( i/(double)N_REF ) + f( (i+1.0)/(double)N_REF );
     }
-    pi_contribution = a * sum;
-    //pi = a * sum;
-
-    contribute(sizeof(double),&pi_contribution,CkReduction::pi);
+    //pi_contribution = a * sum;
+    pi = a * sum;
+    contribute(sizeof(double),&pi,CkReduction::sum_double);
+    */
     
-    clock_t t2 = clock();
-    elapsedTime = (double)(t2 - t1) / CLOCKS_PER_SEC;
+    //t2 = clock();
+    //elapsedTime = (double)(t2 - t1) / CLOCKS_PER_SEC;
 
-    if ( id == 0 ) {
+    /*if ( id == 0 ) {
       print_result(elapsedTime, pi);
       save_benchmark(p, elapsedTime);
 
       mainProxy.done();
-    }
+    }*/
   };
 
   void print_result(double elapsedTime, double pi) {
@@ -88,12 +100,28 @@ public:
     }
   };
 
-  double f(double x) {
+/*  double f(double x) {
     return 4.0 / ( 1.0 + (x * x) );
   };
 
-  void done(void)
+  double computeMyPi(int id, int p) {
+    double a = 1.0 / ( 2.0 * (double)N_REF );
+    double sum = 0.0;
+    for (i = id; i < N_REF; i += p) {
+      sum += f( i/(double)N_REF ) + f( (i+1.0)/(double)N_REF );
+    }
+
+    return a * sum;
+  }*/
+
+  void done(double result)
   {
+    t2 = clock();
+    double elapsedTime = (double)(t2 - t1) / CLOCKS_PER_SEC;
+
+    print_result(elapsedTime, result);
+    save_benchmark(CkNumPes(), elapsedTime);
+
     CkPrintf("All done\n");
     CkExit();
   };
@@ -110,16 +138,28 @@ public:
 
   Hello(CkMigrateMessage *m) {}
   
-  void SayHi(int hiNo)
+  void SayHi(int p)
   {
-    CkPrintf("Hi[%d] from element %d\n",hiNo,thisIndex);
-    if (thisIndex < nElements-1)
-      //Pass the hello on:
-      thisProxy[thisIndex+1].SayHi(hiNo+1);
-    else 
-      //We've been around once-- we're done.
-      mainProxy.done();
+    double pi = computeMyPi(thisIndex, p);
+    contribute(sizeof(double),&pi,CkReduction::sum_double);
+    //mainProxy.done();
   }
+
+  double f(double x) {
+    return 4.0 / ( 1.0 + (x * x) );
+  }
+
+  double computeMyPi(int id, int p) {
+    int i;
+    double a = 1.0 / ( 2.0 * (double)N_REF );
+    double sum = 0.0;
+    for (i = id; i < N_REF; i += p) {
+      sum += f( i/(double)N_REF ) + f( (i+1.0)/(double)N_REF );
+    }
+
+    return a * sum;
+  }
+
 };
 
 #include "hello.def.h"
