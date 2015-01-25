@@ -27,17 +27,8 @@ public:
   Main(CkArgMsg* m)
   {
     //Process command-line arguments
-    /*nElements=5;
-    if(m->argc >1 ) nElements=atoi(m->argv[1]);
-    delete m;
-
-    //Start the computation
-    CkPrintf("Running Hello on %d processors for %d elements\n",
-	     CkNumPes(),nElements);
-    mainProxy = thisProxy;
-
+    /*
     CProxy_Hello arr = CProxy_Hello::ckNew(nElements);
-
     arr[0].SayHi(17);*/
 
     double elapsedTime = 0.0;
