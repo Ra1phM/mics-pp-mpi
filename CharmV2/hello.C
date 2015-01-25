@@ -57,7 +57,7 @@ public:
 
     arr.ckSetReductionClient(cb);
     CkPrintf("Checkpoint 1\n");
-    //arr.SayHi(p);
+    arr.SayHi(p);
     CkPrintf("Checkpoint 2\n");
 
     /*for (i = 0; i < p; i++) {
