@@ -51,11 +51,14 @@ public:
     //CkPrintf("Running with %d processors. (MyID = %d)\n", p, id);
 
     t1 = clock();
-
+    CkPrintf("Before Callback");
     CkCallback *cb = new CkCallback(CkIndex_Hello::SayHi(p), mainProxy);
+    CkPrintf("After Callback");
 
     arr.ckSetReductionClient(cb);
+    CkPrintf("Checkpoint 1");
     arr.SayHi(p);
+    CkPrintf("Checkpoint 2");
 
     /*for (i = 0; i < p; i++) {
       arr[i].ckSetReductionClient(cb);
@@ -141,8 +144,10 @@ public:
   void SayHi(int p)
   {
     double pi = computeMyPi(thisIndex, p);
+    CkPrintf("[%d] computed pi %.20f\n",thisIndex, pi);
     contribute(sizeof(double),&pi,CkReduction::sum_double);
     //mainProxy.done();
+    CkPrintf("[%d] After Contribute.\n",thisIndex);
   }
 
   double f(double x) {
