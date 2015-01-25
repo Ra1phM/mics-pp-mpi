@@ -52,7 +52,7 @@ public:
 
     t1 = clock();
     CkPrintf("Before Callback\n");
-    CkCallback *cb = new CkCallback(CkIndex_Hello::SayHi(p), mainProxy);
+    CkCallback *cb = new CkCallback(CkIndex_Main::done(NULL), mainProxy);
     CkPrintf("After Callback\n");
 
     arr.ckSetReductionClient(cb);
