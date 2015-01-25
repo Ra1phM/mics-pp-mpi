@@ -146,7 +146,7 @@ public:
     CkPrintf("[%d] ThisIndex %d\n",thisIndex, thisIndex);
     double pi = computeMyPi(thisIndex, p);
     CkPrintf("[%d] computed pi %.20f\n",thisIndex, pi);
-    contribute(sizeof(double),&pi,CkReduction::sum_double, new CkCallback(CkIndex_Main::done(pi), mainProxy););
+    contribute(sizeof(double),&pi,CkReduction::sum_double, new CkCallback(CkIndex_Main::done(pi), mainProxy));
     //mainProxy.done();
     CkPrintf("[%d] After Contribute.\n",thisIndex);
   }
