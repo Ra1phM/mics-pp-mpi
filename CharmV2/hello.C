@@ -51,8 +51,8 @@ public:
     
     double a = 1.0 / ( 2.0 * (double)N_REF );
     double sum = 0.0;
-    //for (i = id; i < N_REF; i += p) {
-    for (i = 0; i < N_REF; i += 1) {
+    for (i = id; i < N_REF; i += p) {
+    //for (i = 0; i < N_REF; i += 1) {
       sum += f( i/(double)N_REF ) + f( (i+1.0)/(double)N_REF );
     }
     //pi_contribution = a * sum;
