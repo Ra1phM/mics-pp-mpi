@@ -52,10 +52,10 @@ public:
 
     t1 = clock();
     CkPrintf("Before Callback\n");
-    CkCallback *cb = new CkCallback(CkIndex_Main::done(NULL), mainProxy);
+    //CkCallback *cb = new CkCallback(CkIndex_Main::done(NULL), mainProxy);
     CkPrintf("After Callback\n");
 
-    arr.ckSetReductionClient(cb);
+    //arr.ckSetReductionClient(cb);
     CkPrintf("Checkpoint 1\n");
     arr.SayHi(p);
     CkPrintf("Checkpoint 2\n");
@@ -146,7 +146,7 @@ public:
     CkPrintf("[%d] ThisIndex %d\n",thisIndex, thisIndex);
     double pi = computeMyPi(thisIndex, p);
     CkPrintf("[%d] computed pi %.20f\n",thisIndex, pi);
-    contribute(sizeof(double),&pi,CkReduction::sum_double);
+    contribute(sizeof(double),&pi,CkReduction::sum_double, new CkCallback(CkIndex_Main::done(pi), mainProxy););
     //mainProxy.done();
     CkPrintf("[%d] After Contribute.\n",thisIndex);
   }
