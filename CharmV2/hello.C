@@ -51,14 +51,14 @@ public:
     //CkPrintf("Running with %d processors. (MyID = %d)\n", p, id);
 
     t1 = clock();
-    CkPrintf("Before Callback");
+    CkPrintf("Before Callback\n");
     CkCallback *cb = new CkCallback(CkIndex_Hello::SayHi(p), mainProxy);
-    CkPrintf("After Callback");
+    CkPrintf("After Callback\n");
 
-    //arr.ckSetReductionClient(cb);
-    CkPrintf("Checkpoint 1");
+    arr.ckSetReductionClient(cb);
+    CkPrintf("Checkpoint 1\n");
     //arr.SayHi(p);
-    CkPrintf("Checkpoint 2");
+    CkPrintf("Checkpoint 2\n");
 
     /*for (i = 0; i < p; i++) {
       arr[i].ckSetReductionClient(cb);
