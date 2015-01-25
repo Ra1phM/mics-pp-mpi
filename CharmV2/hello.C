@@ -55,10 +55,10 @@ public:
     //for (i = 0; i < N_REF; i += 1) {
       sum += f( i/(double)N_REF ) + f( (i+1.0)/(double)N_REF );
     }
-    //pi_contribution = a * sum;
-    pi = a * sum;
+    pi_contribution = a * sum;
+    //pi = a * sum;
 
-    //contribute(sizeof(double),&pi_contribution,CkReduction::pi);
+    contribute(sizeof(double),&pi_contribution,CkReduction::pi);
     
     clock_t t2 = clock();
     elapsedTime = (double)(t2 - t1) / CLOCKS_PER_SEC;
