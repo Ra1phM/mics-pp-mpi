@@ -13,6 +13,7 @@
 #define N_REF 1000000000
 
 CProxy_Main mainProxy;
+int nElements;
 
 int count;
 double pi_final;
@@ -51,7 +52,7 @@ public:
     double x, pi, pi_contribution = 0.0;
 
     mainProxy = thisProxy;
-    //CProxy_Hello arr = CProxy_Hello::ckNew(p);
+    CProxy_Hello arr = CProxy_Hello::ckNew(p);
 
     //CkPrintf("Running with %d processors. (MyID = %d)\n", p, id);
 
@@ -66,30 +67,10 @@ public:
     CkPrintf("Checkpoint 2\n");*/
 
     for (i = 0; i < p; i++) {
-      CProxy_Hello::ckNew(i, p);
       //arr[i].ckSetReductionClient(cb);
-      //arr[i].SayHi(p);
+      arr[i].SayHi(p);
     }
-    
-    /*double a = 1.0 / ( 2.0 * (double)N_REF );
-    double sum = 0.0;
-    for (i = id; i < N_REF; i += p) {
-      sum += f( i/(double)N_REF ) + f( (i+1.0)/(double)N_REF );
-    }
-    //pi_contribution = a * sum;
-    pi = a * sum;
-    contribute(sizeof(double),&pi,CkReduction::sum_double);
-    */
-    
-    //t2 = clock();
-    //elapsedTime = (double)(t2 - t1) / CLOCKS_PER_SEC;
 
-    /*if ( id == 0 ) {
-      print_result(elapsedTime, pi);
-      save_benchmark(p, elapsedTime);
-
-      mainProxy.done();
-    }*/
   };
 
   void print_result(double elapsedTime, double pi) {
@@ -131,28 +112,21 @@ public:
 class Hello : public CBase_Hello
 {
 public:
-  Hello(int id, int p)
+  Hello()
   {
-    CkPrintf("Hello %d created\n",id);
-
-    CkPrintf("[%d] ThisIndex %d\n",id, id);
-    double pi = computeMyPi(id, p);
-    CkPrintf("[%d] computed pi %.20f\n",id, pi);
-    //contribute(sizeof(double),&pi,CkReduction::sum_double);
-    mainProxy.done(pi);
-    CkPrintf("[%d] After Contribute.\n",id);
+    CkPrintf("Hello %d created\n",thisIndex);
   }
 
   Hello(CkMigrateMessage *m) {}
   
   void SayHi(int p)
   {
-    /*CkPrintf("[%d] ThisIndex %d\n",thisIndex, thisIndex);
+    CkPrintf("[%d] ThisIndex %d\n",thisIndex, thisIndex);
     double pi = computeMyPi(thisIndex, p);
     CkPrintf("[%d] computed pi %.20f\n",thisIndex, pi);
-    //contribute(sizeof(double),&pi,CkReduction::sum_double);
-    mainProxy.done(pi);
-    CkPrintf("[%d] After Contribute.\n",thisIndex);*/
+    contribute(sizeof(double),&pi,CkReduction::sum_double);
+    //mainProxy.done();
+    CkPrintf("[%d] After Contribute.\n",thisIndex);
   }
 
   double f(double x) {
