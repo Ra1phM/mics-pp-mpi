@@ -52,7 +52,7 @@ public:
 
     t1 = clock();
 
-    CkCallback *cb = new CkCallback(CkIndex_Hello::SayHi(p),/*CkReduction(Main, done)*/, mainProxy);
+    CkCallback *cb = new CkCallback(CkIndex_Hello::SayHi(p), mainProxy);
 
     arr.ckSetReductionClient(cb);
     arr.SayHi(p);
