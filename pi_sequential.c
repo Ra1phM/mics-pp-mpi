@@ -30,7 +30,7 @@ void save_benchmark(int numprocs, double elapsedTime) {
 void xprintf (char *format, ...) {
   va_list args ;
   va_start (args , format);
-  printf ("[Node %i] ", my_id);
+  printf ("[Node %i] ", id);
   vprintf (format, args);
   fflush (stdout);
 }
