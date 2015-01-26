@@ -42,7 +42,7 @@ double f(double x) {
 int main(int argc , char *argv []) {
   int p; // number of processors
   unsigned int n = 0;
-  double elapsed_time = 0.0;
+  double elapsedTime = 0.0;
   
   printf ("Input n = ");
   scanf("%u", &n);
