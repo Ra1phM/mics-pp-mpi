@@ -10,7 +10,7 @@ print '*****************'
 
 path_c_file_to_run = str(sys.argv[1])
 
-start = 1;
+start = 32;
 number_of_nodes = int(sys.argv[2])
 
 setup_command_sequence = [
