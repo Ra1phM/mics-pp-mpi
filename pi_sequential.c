@@ -2,6 +2,7 @@
 #include <stdlib.h> /* for exit */
 #include <stdarg.h> /* for va_{ list , args ... } */
 #include <unistd.h> /* for sleep */
+#include <time.h> /* for elapsed time */
 #include <math.h>
 
 int id = 0; // MPI id for the current process ( set global to be used in xprintf )
